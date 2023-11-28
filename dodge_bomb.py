@@ -5,12 +5,24 @@ import pygame as pg
 
 WIDTH, HEIGHT = 1600, 900
 
-delta ={  #練習3
-    pg.K_UP:(0,-5),  #
-    pg.K_DOWN:(0,+5),  #
-    pg.K_LEFT:(-5,0),  #
-    pg.K_RIGHT:(+5,0)  #
+delta = {  #練習3　押したキーと移動量の辞書
+    pg.K_UP:(0,-5),   #キー：移動量／値:(横方向移動量、縦方向移動量)
+    pg.K_DOWN:(0,+5),  
+    pg.K_LEFT:(-5,0),  
+    pg.K_RIGHT:(+5,0)  
+}  
+
+direction = {
+    (+5,+5):0,
+    (+5,-5):45,
+    (0,-5):90,
+    (-5,-5):135,
+    (-5,0):180,
+    (-5,+5):-135,
+    (0,+5):-90,
+    (+5,+5):-45
 }
+
 
 def check_bound(rct:pg.Rect) -> tuple[bool,bool]:
 
@@ -29,10 +41,10 @@ def main():
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_rct = kk_img.get_rect()  #練習3 こうかとんのSurfaceRectを抽出する
-    kk_rct.center = 900,400
+    kk_rct.center = 900,400  #こうかとんの初期座標
     bom_img = pg.Surface((20,20))  #練習1　透明のSurfaceを作る
     pg.draw.circle(bom_img,(255,0,0),(10,10),10)  #練習１　赤い半径10の円を描く
-    bom_img.set_colorkey((0,0,0))
+    bom_img.set_colorkey((0,0,0)) #S練習１　黒い部分を透明にする
     bom_rct = bom_img.get_rect()  #練習1　爆弾SurfaceのRectを抽出する
     bom_rct.centerx = random.randint(0,WIDTH)
     bom_rct.centery = random.randint(0,HEIGHT)
@@ -54,15 +66,24 @@ def main():
             if key_lst[k]:  #練習3　キーが押されたら
                 sum_mv[0] += tpl[0]
                 sum_mv[1] += tpl[1]
-        
-
         screen.blit(bg_img, [0, 0])
         #screen.blit(kk_img, [900, 400])
-        kk_rct.move_ip(sum_mv[0],sum_mv[1])  #練習３　こうかとんを移動させる
+        
+        
+        kk_rct.move_ip(sum_mv[0],sum_mv[1]) 
+
         if check_bound(kk_rct) != (True,True):
             kk_rct.move_ip(-sum_mv[0],-sum_mv[1])
-        screen.blit(kk_img,kk_rct)
-        bom_rct.move_ip(vx,vy)
+
+        
+
+        screen.blit(kk_img,kk_rct) #練習３　こうかとんを移動させる
+        #実装途中
+        #if key_lst[pg.K_UP]:
+        #    kk_img = pg.transform.rotozoom(kk_img, 90, 1.0)
+        #    screen.blit(kk_img,kk_rct)
+        
+        bom_rct.move_ip(vx,vy)  #練習2　爆弾を移動させる
         yoko,tate = check_bound(bom_rct)  
         if not yoko:  #横方向にはみ出たら
             vx *= -1

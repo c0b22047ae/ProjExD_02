@@ -12,6 +12,15 @@ delta ={  #練習3
     pg.K_RIGHT:(+5,0)  #
 }
 
+def check_bound(rct:pg.Rect) -> tuple[bool,bool]:
+
+    yoko,tate = True,True
+    if rct.left < 0 or WIDTH < rct.right:
+        yoko = False
+    if rct.top < 0 or HEIGHT < rct.bottom:
+        tate = False
+    return yoko,tate
+
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -46,8 +55,15 @@ def main():
         screen.blit(bg_img, [0, 0])
         #screen.blit(kk_img, [900, 400])
         kk_rct.move_ip(sum_mv[0],sum_mv[1])  #練習３　こうかとんを移動させる
+        if check_bound(kk_rct) != (True,True):
+            kk_rct.move_ip(-sum_mv[0],-sum_mv[1])
         screen.blit(kk_img,kk_rct)
         bom_rct.move_ip(vx,vy)
+        yoko,tate = check_bound(bom_rct)  
+        if not yoko:  #横方向にはみ出たら
+            vx *= -1
+        if not tate:  #縦方向にはみ出たら
+            vy *= -1         
         screen.blit(bom_img,bom_rct)
         pg.display.update()
         tmr += 1

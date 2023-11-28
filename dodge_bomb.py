@@ -23,7 +23,6 @@ direction = {
     (+5,+5):-45
 }
 
-
 def check_bound(rct:pg.Rect) -> tuple[bool,bool]:
 
     yoko,tate = True,True
@@ -32,7 +31,6 @@ def check_bound(rct:pg.Rect) -> tuple[bool,bool]:
     if rct.top < 0 or HEIGHT < rct.bottom:
         tate = False
     return yoko,tate
-
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -67,22 +65,11 @@ def main():
                 sum_mv[0] += tpl[0]
                 sum_mv[1] += tpl[1]
         screen.blit(bg_img, [0, 0])
-        #screen.blit(kk_img, [900, 400])
-        
-        
+        #screen.blit(kk_img, [900, 400])         
         kk_rct.move_ip(sum_mv[0],sum_mv[1]) 
-
         if check_bound(kk_rct) != (True,True):
             kk_rct.move_ip(-sum_mv[0],-sum_mv[1])
-
-        
-
         screen.blit(kk_img,kk_rct) #練習３　こうかとんを移動させる
-        #実装途中
-        #if key_lst[pg.K_UP]:
-        #    kk_img = pg.transform.rotozoom(kk_img, 90, 1.0)
-        #    screen.blit(kk_img,kk_rct)
-        
         bom_rct.move_ip(vx,vy)  #練習2　爆弾を移動させる
         yoko,tate = check_bound(bom_rct)  
         if not yoko:  #横方向にはみ出たら
